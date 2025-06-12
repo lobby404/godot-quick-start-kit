@@ -1,0 +1,69 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmbiw58mh6fow"]
+
+[ext_resource type="Script" uid="uid://dvy6c82dh5vmr" path="res://UserInterface/MainMenu/Scripts/main_menu.gd" id="1_2bsiw"]
+[ext_resource type="PackedScene" uid="uid://dhul48uqu1ttj" path="res://_Test/test.tscn" id="2_enren"]
+[ext_resource type="PackedScene" uid="uid://c36jmwqv2q5lo" path="res://UserInterface/SettingsMenu/Scenes/settings_menu.tscn" id="3_eyidq"]
+
+[node name="MainMenu" type="Panel" node_paths=PackedStringArray("focus")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_2bsiw")
+focus = NodePath("Buttons/StartGame")
+start_scene = ExtResource("2_enren")
+
+[node name="GameTitle" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.218
+anchor_right = 0.5
+anchor_bottom = 0.218
+offset_left = -259.5
+offset_top = -68.264
+offset_right = 259.5
+offset_bottom = 68.736
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 100
+text = "Game Title"
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -158.0
+offset_top = -39.0
+offset_right = 158.0
+offset_bottom = 209.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="StartGame" type="Button" parent="Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Start Game"
+
+[node name="Settings" type="Button" parent="Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 45
+text = "Settings"
+
+[node name="Quit" type="Button" parent="Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Quit"
+
+[node name="SettingsMenu" parent="." instance=ExtResource("3_eyidq")]
+visible = false
+
+[connection signal="pressed" from="Buttons/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="Buttons/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Buttons/Quit" to="." method="_on_quit_pressed"]

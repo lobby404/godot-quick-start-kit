@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhul48uqu1ttj"]
+
+[ext_resource type="Texture2D" uid="uid://cymw67kad2r06" path="res://icon.svg" id="2_i3qqh"]
+
+[sub_resource type="Animation" id="Animation_qvk34"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_6pbah"]
+resource_name = "SpinTest"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_61ad0"]
+_data = {
+&"RESET": SubResource("Animation_qvk34"),
+&"SpinTest": SubResource("Animation_6pbah")
+}
+
+[node name="Test" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(536, 401)
+texture = ExtResource("2_i3qqh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_61ad0")
+}
+autoplay = "SpinTest"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 78.0
+offset_top = 57.0
+offset_right = 1068.0
+offset_bottom = 325.0
+theme_override_font_sizes/font_size = 196
+text = "Test scene"

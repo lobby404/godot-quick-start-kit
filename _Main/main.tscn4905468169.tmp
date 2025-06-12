@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dn88atfyoji05"]
+
+[ext_resource type="Script" uid="uid://clo4wwuo33fxr" path="res://_Main/main.gd" id="1_1rcc6"]
+[ext_resource type="PackedScene" uid="uid://cmbiw58mh6fow" path="res://UserInterface/MainMenu/Scenes/main_menu.tscn" id="1_klmot"]
+
+[node name="Main" type="Node" node_paths=PackedStringArray("world_3d", "world_2d", "gui") groups=["scene_controller"]]
+script = ExtResource("1_1rcc6")
+world_3d = NodePath("World_3D")
+world_2d = NodePath("World_2D")
+gui = NodePath("GUI")
+main_menu = ExtResource("1_klmot")
+
+[node name="World_3D" type="Node3D" parent="."]
+
+[node name="World_2D" type="Node2D" parent="."]
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MainMenu" parent="GUI" instance=ExtResource("1_klmot")]
+layout_mode = 1
