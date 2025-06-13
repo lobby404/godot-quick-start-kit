@@ -53,9 +53,9 @@ the `Main` scene acts as the central hub for runtime scene management and game s
 The scene management system is based on [this tutorial by StayAtHomeDev on YouTube](https://youtu.be/32h8BR0FqdI?si=kLkGPVvZM4OmlhrU), adapted for this kit's structure.
 
 **Node Structure**:
-- `World_3D` (`Node3D`) — parent for active 3D scenes
-- `World_2D` (`Node2D`) — parent for active 2D scenes
-- `GUI` (`Control`) — parent for active UI scenes
+- `World_3D` (`Node3D`) - parent for active 3D scenes
+- `World_2D` (`Node2D`) - parent for active 2D scenes
+- `GUI` (`Control`) - parent for active UI scenes
 
 **Scene Management API**:
 * The Main scene provides three key functions for dynamic scene loading, scoped by type:
@@ -69,7 +69,7 @@ The scene management system is based on [this tutorial by StayAtHomeDev on YouTu
 	* `keep_running`: if `true`, the old scene is hidden and continues to process. Default: `false`
 	* If both `delete` and `keep_running` are false, the scene is unparented, ceasing processing but preserving it in memory for reference
 	
-**Settings Requesting**:
+**Settings Menu Requesting**:
 * `request_settings()` emits the `show_settings` signal for registered listeners. By default:
 	* `MainMenu`'s `Settings` button calls `request_settings()`
 	* `PauseMenu`'s `Settings` button calls `request_settings()`
@@ -85,7 +85,7 @@ Pause Management:
 * Since `Main` scene is the root of the gameplay tree, centralising pause logic ensures consistent behaviour across scenes.
 * Avoids fragmented or conflicting pause states in nested systems
 ## Config Manager
-The `Config Manager` is an autoload scene that manages the config files, for settings by default but can easily be expanded on. 
+The `ConfigManager` is an autoload scene that manages the config files, for settings by default but can easily be expanded on. 
 
 **Settings**:
 a settings.ini file is automatically generated on ready. located in `user://settings.ini`
