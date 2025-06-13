@@ -46,7 +46,7 @@ func _on_settings_pressed():
 	main.request_settings()
 
 func _on_main_menu_pressed():
-	Global.scene_controller.return_to_main_menu()
+	main.return_to_main_menu()
 
 func _on_quit_pressed():
 	get_tree().quit()

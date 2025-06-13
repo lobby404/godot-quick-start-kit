@@ -58,7 +58,7 @@ func get_default_settings() -> ConfigFile:
 	
 	default_settings.set_value("audio", "master_volume", 1.0)
 	default_settings.set_value("audio", "music_volume", 1.0)
-	default_settings.set_value("audio", "sfx_volume", 1.0)
+	default_settings.set_value("audio", "sound_effects_volume", 1.0)
 	default_settings.set_value("audio", "mute", false)
 	
 	return default_settings

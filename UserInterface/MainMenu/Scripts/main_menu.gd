@@ -19,8 +19,8 @@ func _get_ui_focus():
 		focus.grab_focus()
 
 func _on_start_game_pressed():
-	Global.scene_controller.change_2d_scene("res://_Test/test.tscn")
-	Global.scene_controller.change_gui_scene("res://UserInterface/PauseMenu/Scenes/pause_menu.tscn")
+	main.change_2d_scene("res://_Test/test.tscn")
+	main.change_gui_scene("res://UserInterface/PauseMenu/Scenes/pause_menu.tscn")
 
 func _on_settings_pressed():
 	main.request_settings()
