@@ -10,34 +10,46 @@ extends CanvasLayer
 @export var fullscreen_checkbox: CheckBox
 @export var current_screen_option: OptionButton
 @export var mute_checkbox: CheckBox
+@export var audio_output_option: OptionButton
 
 var main: SceneController
 
 func _ready():
 	main = get_tree().get_first_node_in_group("scene_controller")
 	
-	if DisplayServer.get_screen_count() > 1:
-		_populate_screen_option()
+	var screen_count: int = DisplayServer.get_screen_count()
+	if screen_count > 1:
+		_populate_screen_option(screen_count)
 	else:
-		pass
+		current_screen_option.get_parent().hide()
+	
+	var output_count: int = AudioServer.get_output_device_list().size()
+	if output_count > 1:
+		_populate_audio_output_option(output_count)
+	else:
+		audio_output_option.hide()
 	
 	hide()
 	_update_visuals()
 	
-	ConfigManager.connect("resetting_settings", _update_visuals)
 	main.connect("show_settings", _on_show)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("Pause"):
 		_on_hide()
 
-func _populate_screen_option():
-	var screen_count: int = DisplayServer.get_screen_count()
+func _populate_screen_option(screen_count: int):
 	for screen in range(screen_count):
 		current_screen_option.add_item(" Monitor %d " % (screen + 1), screen)
 
+func _populate_audio_output_option(output_count: int):
+	for device in range(output_count):
+		audio_output_option.add_item(AudioServer.get_output_device_list()[device])
+
 func _update_visuals():
 	var video_settings = ConfigManager.load_video_settings()
+	var audio_settings = ConfigManager.load_audio_settings()
+	
 	if fullscreen_checkbox:
 		fullscreen_checkbox.button_pressed = video_settings.fullscreen
 	else:
@@ -48,7 +60,12 @@ func _update_visuals():
 		if current_screen_option.selected != selected_screen:
 			current_screen_option.selected = selected_screen
 	
-	var audio_settings = ConfigManager.load_audio_settings()
+	if audio_output_option:
+		var ouput_device_index = audio_settings.audio_output
+		if audio_output_option.selected != ouput_device_index:
+			audio_output_option.selected = ouput_device_index
+			_on_audio_ouput_selected(ouput_device_index)
+		
 	if mute_checkbox:
 		mute_checkbox.button_pressed = audio_settings.mute
 		if mute_checkbox.button_pressed:
@@ -95,3 +112,8 @@ func _on_current_screen_options_item_selected(index: int) -> void:
 	ConfigManager.save_video_setting("current_scene", index)
 	ConfigManager.set_screen(index)
 	_centre_window(index)
+
+
+func _on_audio_ouput_selected(index: int) -> void:
+	ConfigManager.save_audio_setting("audio_output", index)
+	ConfigManager.set_audio_output(index)

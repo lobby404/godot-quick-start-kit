@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://u06gistahwqp"]
+[gd_scene format=3 uid="uid://u06gistahwqp"]
 
-[ext_resource type="Script" uid="uid://qdwsmqggf6a3" path="res://UserInterface/Components/Audio/audio_slider_component.gd" id="1_tu23d"]
+[ext_resource type="Script" uid="uid://qdwsmqggf6a3" path="res://UserInterface/SettingsMenu/Components/Audio/audio_slider_component.gd" id="1_tu23d"]
 
-[node name="AudioSliderComponent" type="HSlider"]
+[node name="AudioSliderComponent" type="HSlider" unique_id=372434781]
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.025

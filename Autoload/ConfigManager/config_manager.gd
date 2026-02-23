@@ -49,6 +49,9 @@ func toggle_mute(state: bool):
 
 func set_screen(screen: int):
 	DisplayServer.window_set_current_screen(screen)
+	
+func set_audio_output(device_index: int):
+	AudioServer.output_device = AudioServer.get_output_device_list()[device_index]
 
 func get_default_settings() -> ConfigFile:
 	var default_settings: ConfigFile = ConfigFile.new()
@@ -60,6 +63,7 @@ func get_default_settings() -> ConfigFile:
 	default_settings.set_value("audio", "music_volume", 1.0)
 	default_settings.set_value("audio", "sound_effects_volume", 1.0)
 	default_settings.set_value("audio", "mute", false)
+	default_settings.set_value("audio", "audio_output", 0)
 	
 	return default_settings
 
