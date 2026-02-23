@@ -3,8 +3,11 @@
 ##############################
 extends Panel
 
-@export var focus: Button = null
-@export var start_scene: PackedScene = null
+@export var focus: Button
+
+@export_group("Scenes")
+@export var start_scene: PackedScene 
+@export var pause_menu : PackedScene
 
 var main: SceneController
 
@@ -19,8 +22,8 @@ func _get_ui_focus():
 		focus.grab_focus()
 
 func _on_start_game_pressed():
-	main.change_2d_scene("res://_Test/test.tscn")
-	main.change_gui_scene("res://UserInterface/PauseMenu/Scenes/pause_menu.tscn")
+	main.add_new_2d_scene(start_scene)
+	main.swap_gui_scene(pause_menu, load(self.scene_file_path))
 
 func _on_settings_pressed():
 	main.request_settings()

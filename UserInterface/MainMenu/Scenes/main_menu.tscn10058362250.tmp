@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cmbiw58mh6fow"]
 
 [ext_resource type="Script" uid="uid://dvy6c82dh5vmr" path="res://UserInterface/MainMenu/Scripts/main_menu.gd" id="1_2bsiw"]
-[ext_resource type="PackedScene" path="res://_Test/test 2d.tscn" id="2_avngp"]
+[ext_resource type="PackedScene" uid="uid://dhul48uqu1ttj" path="res://_Test/test.tscn" id="2_enren"]
 [ext_resource type="PackedScene" uid="uid://bb0ttw3jq55kx" path="res://UserInterface/PauseMenu/Scenes/pause_menu.tscn" id="3_avngp"]
 [ext_resource type="PackedScene" uid="uid://c36jmwqv2q5lo" path="res://UserInterface/SettingsMenu/Scenes/settings_menu.tscn" id="3_eyidq"]
 
@@ -15,7 +15,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_2bsiw")
 focus = NodePath("Buttons/StartGame")
-start_scene = ExtResource("2_avngp")
+start_scene = ExtResource("2_enren")
 pause_menu = ExtResource("3_avngp")
 
 [node name="GameTitle" type="Label" parent="." unique_id=1574899227]
