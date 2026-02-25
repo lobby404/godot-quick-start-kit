@@ -24,6 +24,11 @@ config/icon="res://icon.svg"
 ConfigManager="*res://autoload/config_manager/config_manager.gd"
 Constants="*uid://dvnrypu1pu71r"
 
+[editor]
+
+version_control/plugin_name="GitPlugin"
+version_control/autoload_on_startup=true
+
 [input]
 
 ui_accept={

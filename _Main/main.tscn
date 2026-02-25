@@ -8,7 +8,6 @@ script = ExtResource("1_1rcc6")
 world_3d = NodePath("World_3D")
 world_2d = NodePath("World_2D")
 gui = NodePath("GUI")
-main_menu = ExtResource("1_klmot")
 
 [node name="World_3D" type="Node3D" parent="." unique_id=1899880820]
 
