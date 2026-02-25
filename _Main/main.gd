@@ -1,23 +1,22 @@
-##############################
-#        Premade Asset       #
-##############################
 class_name SceneController
 extends Node
+## Premade Asset
 
 signal show_settings
 signal hiding_settings
 
 @export_category("Scene Management")
-@export var world_3d: Node3D
-@export var world_2d: Node2D
-@export var gui: Control
+@export var world_3d : Node3D
+@export var world_2d : Node2D
+@export var gui : Control
 
 @export_category("Utility")
-@export var main_menu: PackedScene
+@export var main_menu : PackedScene = preload(Constants.DEFAULT_SCENES.main_menu)
 
-var current_3d_scenes: Array[Node]
-var current_2d_scenes: Array[Node]
-var current_gui_scenes: Array[Node]
+var current_3d_scenes : Array[Node]
+var current_2d_scenes : Array[Node]
+var current_gui_scenes : Array[Node]
+
 
 func _ready():
 	
@@ -36,17 +35,22 @@ func _ready():
 			if is_instance_valid(child):
 				current_gui_scenes.append(child)
 
+
 func request_settings():
 	show_settings.emit()
+
 
 func closing_settings():
 	hiding_settings.emit()
 
+
 func request_pause():
 	get_tree().paused = true
 
+
 func request_unpause():
 	get_tree().paused = false
+
 
 func return_to_main_menu(
 						use_default : = true, 
@@ -79,6 +83,7 @@ func return_to_main_menu(
 	if get_tree().paused:
 		get_tree().paused = false
 
+
 func isolate_new_3d_scene(new_scene : PackedScene):
 	current_gui_scenes.all(queue_free)
 	current_gui_scenes.clear()
@@ -92,6 +97,7 @@ func isolate_new_3d_scene(new_scene : PackedScene):
 	var instance_scene = new_scene.instantiate()
 	if is_instance_valid(instance_scene):
 		world_3d.add_child(instance_scene)
+
 
 func isolate_new_2d_scene(new_scene : PackedScene):
 	current_gui_scenes.all(queue_free)
@@ -107,6 +113,7 @@ func isolate_new_2d_scene(new_scene : PackedScene):
 	if is_instance_valid(instance_scene):
 		world_2d.add_child(instance_scene)
 
+
 func isolate_new_gui_scene(new_scene : PackedScene):
 	current_gui_scenes.all(queue_free)
 	current_gui_scenes.clear()
@@ -121,7 +128,10 @@ func isolate_new_gui_scene(new_scene : PackedScene):
 	if is_instance_valid(instance_scene):
 		gui.add_child(instance_scene)
 
-func swap_3d_scene(new_scene : PackedScene, old_scene : PackedScene, add_if_missing := false) -> void:
+
+func swap_3d_scene(new_scene : PackedScene, 
+					old_scene : PackedScene, 
+					add_if_missing := false) -> void:
 	for scene in current_3d_scenes:
 		if scene.scene_file_path == old_scene.resource_path:
 			var idx = current_3d_scenes.find(scene)
@@ -130,7 +140,10 @@ func swap_3d_scene(new_scene : PackedScene, old_scene : PackedScene, add_if_miss
 			world_3d.add_child(current_3d_scenes[idx])
 			break
 
-func swap_2d_scene(new_scene : PackedScene, old_scene : PackedScene, add_if_missing := false) -> void:
+
+func swap_2d_scene(new_scene : PackedScene, 
+					old_scene : PackedScene,
+					add_if_missing := false) -> void:
 	for scene in current_2d_scenes:
 		if scene.scene_file_path == old_scene.resource_path:
 			var idx = current_2d_scenes.find(scene)
@@ -139,15 +152,18 @@ func swap_2d_scene(new_scene : PackedScene, old_scene : PackedScene, add_if_miss
 			world_2d.add_child(current_2d_scenes[idx])
 			break
 
-func swap_gui_scene(new_scene : PackedScene, old_scene : PackedScene, add_if_missing := false) -> void:
-	
+
+func swap_gui_scene(new_scene : PackedScene, 
+					old_scene : PackedScene, 
+					add_if_missing := false) -> void:
 	for scene in current_gui_scenes:
 		if scene.scene_file_path == old_scene.resource_path:
-			var idx = current_gui_scenes.find(scene)
+			var idx : int = current_gui_scenes.find(scene)
 			scene.queue_free()
 			current_gui_scenes[idx] = new_scene.instantiate()
 			gui.add_child(current_gui_scenes[idx])
 			break
+
 
 func add_new_3d_scene(new_scene : PackedScene) -> void:
 	var instance_scene = new_scene.instantiate()
@@ -155,26 +171,19 @@ func add_new_3d_scene(new_scene : PackedScene) -> void:
 	current_3d_scenes.append(instance_scene)
 	world_3d.add_child(instance_scene)
 
+
 func add_new_2d_scene(new_scene : PackedScene) -> void:
 	var instance_scene = new_scene.instantiate()
 	
 	current_2d_scenes.append(instance_scene)
 	world_2d.add_child(instance_scene)
 
+
 func add_new_gui_scene(new_scene : PackedScene) -> void:
 	var instance_scene = new_scene.instantiate()
 	
 	current_gui_scenes.append(instance_scene)
 	gui.add_child(instance_scene)
-	
-
-
-
-
-
-
-
-
 
 
 #func change_3d_scene(new_scene: String, delete: bool = true, keep_running: bool = false) -> void:
