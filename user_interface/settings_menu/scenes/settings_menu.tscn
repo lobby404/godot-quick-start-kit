@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://c36jmwqv2q5lo"]
 
-[ext_resource type="Script" uid="uid://b5r7732tcdcqs" path="res://UserInterface/settings_menu/scripts/settings_menu.gd" id="1_ncjg3"]
-[ext_resource type="PackedScene" uid="uid://dj5vwdm2t0dqf" path="res://UserInterface/settings_menu/components/split_settings_component.tscn" id="2_f5w70"]
+[ext_resource type="Script" uid="uid://b5r7732tcdcqs" path="res://user_interface/settings_menu/scripts/settings_menu.gd" id="1_ncjg3"]
+[ext_resource type="PackedScene" uid="uid://dj5vwdm2t0dqf" path="res://user_interface/settings_menu/components/split_settings_component.tscn" id="2_f5w70"]
 [ext_resource type="Theme" uid="uid://b3kq74llqlv3x" path="res://assets/ui_themes/minimalist_ui/MinimalUI.tres" id="3_bvtd8"]
-[ext_resource type="PackedScene" uid="uid://u06gistahwqp" path="res://UserInterface/settings_menu/components/audio_slider/audio_slider_component.tscn" id="4_lx3oe"]
+[ext_resource type="PackedScene" uid="uid://u06gistahwqp" path="res://user_interface/settings_menu/components/audio_slider/audio_slider_component.tscn" id="4_lx3oe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwsbw"]
 bg_color = Color(0.0214346, 0.0214346, 0.0214346, 1)

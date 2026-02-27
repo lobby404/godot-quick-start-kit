@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bb0ttw3jq55kx"]
 
-[ext_resource type="Script" uid="uid://ddqj62v64c5ri" path="res://UserInterface/pause_menu/scripts/pause_menu.gd" id="1_0ft4y"]
-[ext_resource type="PackedScene" uid="uid://c36jmwqv2q5lo" path="res://UserInterface/settings_menu/scenes/settings_menu.tscn" id="2_6yu8r"]
+[ext_resource type="Script" uid="uid://ddqj62v64c5ri" path="res://user_interface/pause_menu/scripts/pause_menu.gd" id="1_0ft4y"]
+[ext_resource type="PackedScene" uid="uid://c36jmwqv2q5lo" path="res://user_interface/settings_menu/scenes/settings_menu.tscn" id="2_6yu8r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_04n6d"]
 bg_color = Color(0.142858, 0.142858, 0.142858, 1)
