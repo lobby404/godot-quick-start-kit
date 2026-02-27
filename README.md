@@ -57,7 +57,7 @@ The scene management system is based on [this tutorial by StayAtHomeDev on YouTu
 - `World_2D` (`Node2D`) - parent for active 2D scenes
 - `GUI` (`Control`) - parent for active UI scenes
 
-**Scene Management API**:
+**Scene Management API**: (UNDER CONSTRUCTION, INFO OUTDATED)
 * The Main scene provides three key functions for dynamic scene loading, scoped by type:
 	* `change_3d_scene(new_scene: String, delete: bool = true, keep_running: bool = false)`
 	* `change_2d_scene(new_scene: String, delete: bool = true, keep_running: bool = false)`
