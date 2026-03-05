@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cmbiw58mh6fow"]
 
 [ext_resource type="Script" uid="uid://dvy6c82dh5vmr" path="res://user_interface/main_menu/scripts/main_menu.gd" id="1_2bsiw"]
-[ext_resource type="PackedScene" uid="uid://dhul48uqu1ttj" path="res://_test/test.tscn" id="2_avngp"]
 [ext_resource type="PackedScene" uid="uid://c36jmwqv2q5lo" path="res://user_interface/settings_menu/scenes/settings_menu.tscn" id="3_eyidq"]
 
 [node name="MainMenu" type="Panel" unique_id=1256354561 node_paths=PackedStringArray("focus")]
@@ -14,7 +13,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_2bsiw")
 focus = NodePath("Buttons/StartGame")
-start_scene = ExtResource("2_avngp")
+start_scene = "uid://dhul48uqu1ttj"
 
 [node name="GameTitle" type="Label" parent="." unique_id=1574899227]
 layout_mode = 1
@@ -60,6 +59,21 @@ text = "Settings"
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Quit"
+
+[node name="VersionLabel" type="Label" parent="." unique_id=1380043354]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -56.0
+offset_top = -35.0
+offset_right = -11.0
+offset_bottom = -12.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "v0.0.0"
 
 [node name="SettingsMenu" parent="." unique_id=617885970 instance=ExtResource("3_eyidq")]
 visible = false

@@ -9,6 +9,7 @@
 bg_color = Color(0.0214346, 0.0214346, 0.0214346, 1)
 
 [node name="SettingsMenu" type="CanvasLayer" unique_id=943861164 node_paths=PackedStringArray("focus", "fullscreen_checkbox", "current_screen_option", "mute_checkbox", "audio_output_option")]
+layer = 15
 script = ExtResource("1_ncjg3")
 focus = NodePath("SettingsPanel/ContentBox/SettingsContainer/VBoxContainer/PanelContainer2/MarginContainer/ScrollContainer/VBoxContainer/Fullscreen/FullsceenSplit/FullscreenCheckBox")
 fullscreen_checkbox = NodePath("SettingsPanel/ContentBox/SettingsContainer/VBoxContainer/PanelContainer2/MarginContainer/ScrollContainer/VBoxContainer/Fullscreen/FullsceenSplit/FullscreenCheckBox")

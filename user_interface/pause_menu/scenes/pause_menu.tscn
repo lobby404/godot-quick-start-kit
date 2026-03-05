@@ -6,77 +6,86 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_04n6d"]
 bg_color = Color(0.142858, 0.142858, 0.142858, 1)
 
-[node name="PauseMenu" type="CanvasLayer" node_paths=PackedStringArray("focus")]
+[node name="PauseMenu" type="CanvasLayer" unique_id=1204433152 node_paths=PackedStringArray("focus")]
 process_mode = 3
+layer = 10
 script = ExtResource("1_0ft4y")
-focus = NodePath("PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer/Resume")
+focus = NodePath("PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer/Resume")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=282567426]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer" unique_id=862525935]
 layout_mode = 2
-split_offset = -300
+split_offsets = PackedInt32Array(-300)
 dragging_enabled = false
+split_offset = -300
 
-[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/HSplitContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/HSplitContainer" unique_id=192060846]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_04n6d")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HSplitContainer/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HSplitContainer/PanelContainer2" unique_id=817228606]
 layout_mode = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="VSplitContainer" type="VSplitContainer" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer"]
+[node name="VSplitContainer" type="VSplitContainer" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer" unique_id=2046088440]
 layout_mode = 2
 dragging_enabled = false
 
-[node name="PauseTitle" type="Label" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer"]
+[node name="PauseTitle" type="Label" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer" unique_id=860591092]
 layout_mode = 2
 theme_override_font_sizes/font_size = 59
 text = "Paused"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer"]
+[node name="ButtonsContainer" type="VBoxContainer" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer" unique_id=1867300422]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="Resume" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer"]
+[node name="Resume" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer" unique_id=1152197204]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Resume"
 
-[node name="Settings" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer"]
+[node name="Reset" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer" unique_id=1970415579]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Reset"
+
+[node name="Settings" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer" unique_id=1609278787]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Settings"
 
-[node name="MainMenu" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer"]
+[node name="MainMenu" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer" unique_id=2059840454]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Main Menu"
 
-[node name="Quit" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer" unique_id=1639144291]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Quit"
 
-[node name="Control" type="Control" parent="PanelContainer/HSplitContainer"]
+[node name="Control" type="Control" parent="PanelContainer/HSplitContainer" unique_id=1533759284]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SettingsMenu" parent="." instance=ExtResource("2_6yu8r")]
+[node name="SettingsMenu" parent="." unique_id=1115986572 instance=ExtResource("2_6yu8r")]
 visible = false
 
-[connection signal="pressed" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
-[connection signal="pressed" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="button_up" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer/Reset" to="." method="_on_reset_button_up"]
+[connection signal="pressed" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer/MainMenu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="PanelContainer/HSplitContainer/PanelContainer2/MarginContainer/VSplitContainer/ButtonsContainer/Quit" to="." method="_on_quit_pressed"]
