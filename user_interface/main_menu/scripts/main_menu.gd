@@ -9,6 +9,7 @@ extends Panel
 
 var main: SceneController
 
+var main_menu_path = Constants.DEFAULT_SCENES.main_menu
 
 func _ready():
 	main = get_tree().get_first_node_in_group("scene_controller")
@@ -25,8 +26,8 @@ func _get_ui_focus():
 
 
 func _on_start_game_pressed():
-	main.add_new_2d_scene(start_scene)
-	main.swap_gui_scene(pause_menu, self.scene_file_path)
+	main.add_new_scene(start_scene, main.world_2d, main.active_2d_scenes)
+	main.swap_scene(pause_menu, self.scene_file_path, main.gui, main.active_gui_scenes)
 
 
 func _on_settings_pressed():

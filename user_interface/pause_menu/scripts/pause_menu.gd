@@ -2,6 +2,7 @@ extends CanvasLayer
 ## Premade Asset
 
 @export var focus : Control
+@export var scene_to_reset : String = Constants.DEFAULT_SCENES.test
 
 var main : SceneController
 var settings_opened := false
@@ -58,13 +59,6 @@ func _on_quit_pressed():
 
 
 func _on_reset_button_up():
-	var active_game := main.get_active_game_world()
-	var current_scene : String
-	if active_game == main.world_2d:
-		current_scene = main.current_2d_scenes[0].scene_file_path
-		main.reload_2d_scene(current_scene)
-	if active_game == main.world_3d:
-		current_scene = main.current_3d_scenes[0].scene_file_path
-		main.reload_3d_scene(current_scene)
+	main.reload_scene(scene_to_reset, main.world_2d, main.active_2d_scenes)
 	
 	unpause()

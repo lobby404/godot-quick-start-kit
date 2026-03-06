@@ -1,9 +1,10 @@
-class_name SceneController
+class_name SceneController ## This is a level loader, used to handle heavy Scenes
 extends Node
 ## Premade Asset
 
 signal show_settings
 signal hiding_settings
+signal scene_resource_ready(path : String)
 
 @export_category("Scene Management")
 @export var world_3d : Node3D
@@ -13,29 +14,36 @@ signal hiding_settings
 @export_category("Utility")
 @export var main_menu : String = Constants.DEFAULT_SCENES.main_menu
 
-var current_3d_scenes : Array[Node]
-var current_2d_scenes : Array[Node]
-var current_gui_scenes : Array[Node]
+var scene_cache : Dictionary[String, PackedScene] = {}
+var loading_scene : Dictionary[String, bool] = {}
+
+var active_3d_scenes : Dictionary[String, Node] = {}
+var active_2d_scenes : Dictionary[String, Node] = {}
+var active_gui_scenes : Dictionary[String, Node] = {}
 
 
 func _ready():
 	prepare_resource(main_menu)
 	
-	if world_3d.get_child_count() > 0:
-		for child in world_3d.get_children():
-			if is_instance_valid(child):
-				current_3d_scenes.append(child)
+	register_existing(world_3d, active_3d_scenes)
+	register_existing(world_2d, active_2d_scenes)
+	register_existing(gui, active_gui_scenes)
 	
-	if world_2d.get_child_count() > 0:
-		for child in world_2d.get_children():
-			if is_instance_valid(child):
-				current_2d_scenes.append(child)
-	
-	if gui.get_child_count() > 0:
-		for child in gui.get_children():
-			if is_instance_valid(child):
-				current_gui_scenes.append(child)
+	for scenes in Constants.DEFAULT_SCENES.values():
+		prepare_resource(scenes)
 
+func _process(_delta):
+	if !loading_scene.is_empty():
+		
+		for path in loading_scene.keys():
+			var status = ResourceLoader.load_threaded_get_status(path)
+			
+			if status == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_LOADED:
+				var scene = ResourceLoader.load_threaded_get(path)
+				
+				scene_cache[path] = scene
+				loading_scene.erase(path)
+				scene_resource_ready.emit(path)
 
 func request_settings():
 	show_settings.emit()
@@ -54,191 +62,95 @@ func request_unpause():
 
 
 func prepare_resource(resource_path: String):
+	if scene_cache.has(resource_path):
+		return
+	
+	if loading_scene.has(resource_path):
+		return
+	
 	ResourceLoader.load_threaded_request(resource_path)
+	loading_scene[resource_path] = true
 
 
-func get_cached_scene(resource_path : String) -> Resource:
-	var new_scene
-	if ResourceLoader.has_cached(resource_path):
-		new_scene = ResourceLoader.load_threaded_get(resource_path)
-		return new_scene
-	else:
-		return null
+func get_cached_scene(resource_path : String) -> PackedScene:
+	if scene_cache.has(resource_path):
+		return scene_cache[resource_path]
+		
+	if !loading_scene.has(resource_path):
+		prepare_resource(resource_path)
+		
+	return null
+
+
+func register_existing(parent : Node, registry : Dictionary) -> void:
+	for child in parent.get_children():
+		
+		if !registry.has(child) and child.scene_file_path != "":
+			registry[child.scene_file_path] = child
 
 
 func get_active_game_world() -> Node:
 	if !world_2d.get_children().is_empty() and world_3d.get_children().is_empty():
 		return world_2d
+		
 	elif !world_3d.get_children().is_empty() and world_2d.get_children().is_empty():
 		return world_3d
+		
 	else: return null
 
 
 func return_to_main_menu(
-						main_menu_path : String = main_menu, 
-						delete_all_gui_scenes := true,
-						delete_3d_world_scenes := true, 
-						delete_2d_world_scenes := true,
-						):
+	main_menu_path : String = main_menu, 
+	delete_all_gui_scenes := true,
+	delete_3d_world_scenes := true, 
+	delete_2d_world_scenes := true):
 	if delete_all_gui_scenes:
-		for scene in current_gui_scenes:
-			scene.queue_free()
-		current_gui_scenes.clear()
-	
+		clear_registry(active_gui_scenes)
+	#
 	if delete_3d_world_scenes:
-		for scene in current_3d_scenes:
-			scene.queue_free()
-		current_3d_scenes.clear()
-	
+		clear_registry(active_3d_scenes)
+	#
 	if delete_2d_world_scenes:
-		for scene in current_2d_scenes:
-			scene.queue_free()
-		current_2d_scenes.clear()
+		clear_registry(active_2d_scenes)
 	
-	add_new_gui_scene(main_menu_path)
+	add_new_scene(main_menu_path, gui, active_gui_scenes)
 	
 	if get_tree().paused:
 		request_unpause()
 
 
-func add_new_3d_scene(new_scene_path : String) -> void:
-	var new_scene = get_cached_scene(new_scene_path)
-	if !new_scene:
-		new_scene = load(new_scene_path)
+func add_new_scene(path : String, parent : Node, registry : Dictionary) -> void:
+	var packed_scene : PackedScene = get_cached_scene(path)
+	if packed_scene is not PackedScene:
+		push_error(path, " did not return a packed scene")
+		return
+	var instance = packed_scene.instantiate()
+	registry[path] = instance
+	parent.add_child(instance)
+
+
+func clear_registry(registry : Dictionary):
+	for scene in registry.values():
+		scene.queue_free()
+	registry.clear()
+
+
+func remove_scene(scene_path : String, registry : Dictionary):
+	if !registry.has(scene_path):
+		print(scene_path, " does not exist in ", registry)
+		return
+	registry[scene_path].queue_free()
+	registry.erase(scene_path)
+
+
+func reload_scene(scene_path : String, parent : Node, registry : Dictionary):
+	if !registry[scene_path]:
+		return
 	
-	var instance_scene = new_scene.instantiate()
-	
-	current_3d_scenes.append(instance_scene)
-	world_3d.add_child(instance_scene)
+	remove_scene(scene_path, registry)
+	add_new_scene(scene_path, parent, registry)
 
 
-func add_new_2d_scene(new_scene_path : String) -> void:
-	var new_scene = get_cached_scene(new_scene_path)
-	if !new_scene:
-		new_scene = load(new_scene_path)
-	
-	var instance_scene = new_scene.instantiate()
-	
-	current_2d_scenes.append(instance_scene)
-	world_2d.add_child(instance_scene)
-
-
-func add_new_gui_scene(new_scene_path : String) -> void:
-	var new_scene = get_cached_scene(new_scene_path)
-	if !new_scene:
-		new_scene = load(new_scene_path)
-	
-	var instance_scene = new_scene.instantiate()
-	
-	current_gui_scenes.append(instance_scene)
-	gui.add_child(instance_scene)
-
-
-func reload_3d_scene(scene_path : String):
-	var scene_missing := true
-	for scene in current_3d_scenes:
-		if scene.scene_file_path == scene_path:
-			scene_missing = false
-			var idx = current_3d_scenes.find(scene)
-			scene.queue_free()
-			var new_scene = load(scene_path)
-			current_3d_scenes[idx] = new_scene.instantiate()
-			world_3d.add_child(current_3d_scenes[idx])
-			break
-	if scene_missing:
-		push_error(scene_path, " Does not exist in current scope")
-
-
-func reload_2d_scene(scene_path : String):
-	var scene_missing := true
-	for scene in current_2d_scenes:
-		if scene.scene_file_path == scene_path:
-			scene_missing = false
-			var idx = current_2d_scenes.find(scene)
-			scene.queue_free()
-			var new_scene = load(scene_path)
-			current_2d_scenes[idx] = new_scene.instantiate()
-			world_2d.add_child(current_2d_scenes[idx])
-			break
-	if scene_missing:
-		push_error(scene_path, " Does not exist in current scope")
-
-
-func reload_gui_scene(scene_path : String):
-	var scene_missing := true
-	for scene in current_gui_scenes:
-		if scene.scene_file_path == scene_path:
-			scene_missing = false
-			var idx = current_gui_scenes.find(scene)
-			scene.queue_free()
-			var new_scene = load(scene_path)
-			current_gui_scenes[idx] = new_scene.instantiate()
-			gui.add_child(current_gui_scenes[idx])
-			break
-	if scene_missing:
-		push_error(scene_path, " Does not exist in current scope")
-
-
-func swap_3d_scene(new_scene_path : String, 
-					old_scene : PackedScene, 
-					add_if_missing := false) -> void:
-	var scene_missing := true
-	for scene in current_3d_scenes:
-		if scene.scene_file_path == old_scene.resource_path:
-			scene_missing = false
-			var idx = current_3d_scenes.find(scene)
-			scene.queue_free()
-			var new_scene
-			if ResourceLoader.has_cached(new_scene_path):
-				new_scene = ResourceLoader.load_threaded_get(new_scene_path)
-			else:
-				new_scene = load(new_scene_path)
-			current_3d_scenes[idx] = new_scene.instantiate()
-			world_3d.add_child(current_3d_scenes[idx])
-			break
-	if scene_missing and add_if_missing:
-		add_new_3d_scene(new_scene_path)
-	else:
-		push_error(new_scene_path, " Does not exist in current scope")
-
-
-func swap_2d_scene(new_scene_path : String, 
-					old_scene : PackedScene,
-					add_if_missing := false) -> void:
-	var scene_missing := true
-	for scene in current_2d_scenes:
-		if scene.scene_file_path == old_scene.resource_path:
-			scene_missing = false
-			var idx = current_2d_scenes.find(scene)
-			scene.queue_free()
-			var new_scene
-			if ResourceLoader.has_cached(new_scene_path):
-				new_scene = ResourceLoader.load_threaded_get(new_scene_path)
-			else:
-				new_scene = load(new_scene_path)
-			current_2d_scenes[idx] = new_scene.instantiate()
-			world_2d.add_child(current_2d_scenes[idx])
-			break
-	if scene_missing and add_if_missing:
-		add_new_2d_scene(new_scene_path)
-	else:
-		push_error(new_scene_path, " Does not exist in current scope")
-
-
-func swap_gui_scene(new_scene : String, 
-					old_scene : String, 
-					add_if_missing := false) -> void:
-	var scene_missing := true
-	for scene in current_gui_scenes:
-		if scene.scene_file_path == old_scene:
-			scene_missing = false
-			var idx : int = current_gui_scenes.find(scene)
-			scene.queue_free()
-			current_gui_scenes[idx] = load(new_scene).instantiate()
-			gui.add_child(current_gui_scenes[idx])
-			break
-	if scene_missing and add_if_missing:
-		add_new_gui_scene(new_scene)
-	else:
-		push_error("Attempted to swap %s with %s, but does not exist in current scope" 
-					% [new_scene, old_scene])
+func swap_scene(new : String, old: String, parent : Node,  registry : Dictionary):
+	remove_scene(old, registry)
+	add_new_scene(new, parent, registry)
